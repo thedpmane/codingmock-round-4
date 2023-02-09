@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>
+
+    <style>
+      .nav {
+        text-align: center;
+      }
+      .nav button a {
+        text-decoration: none;
+        font-size: 30px;
+      }
+      .nav button {
+        border-radius: 10px;
+      }
+      h1 {
+        width: 20%;
+        padding: 30px;
+        margin: auto;
+      }
+      .formdiv > form {
+        display: grid;
+        width: 20%;
+        gap: 20px;
+        margin: auto;
+      }
+      .formdiv > form > input {
+        height: 30px;
+      }
+      .formdiv > form > button {
+        height: 30px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <h1>Welcome to Book Mart</h1>
+      <button><a href="./admin.html">Admin</a></button>
+      <button><a href="./user.html">User</a></button>
+    </div>
+    <h1>Admin Login page</h1>
+    <div class="formdiv">
+      <form id="login-form">
+        <input type="email" name="email" id="email" placeholder="Email" />
+        <input
+          type="text"
+          name="password"
+          id="password"
+          placeholder="Password"
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+
+  <script>
+    let isAuth = JSON.parse(localStorage.getItem("authd"));
+    console.log(isAuth);
+    document
+      .getElementById("login-form")
+      .addEventListener("submit", getFormdata);
+    function getFormdata(e) {
+      e.preventDefault();
+      let payload = {
+        email: document.getElementById("email").value || "",
+        password: document.getElementById("password").value || "",
+      };
+      if (payload.email && payload.password) {
+        axios.post(`https://reqres.in/api/login`, payload).then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            localStorage.setItem("authd", JSON.stringify(true));
+            location.href = "./admin.html";
+          }
+        });
+      } else {
+        alert("fill the empty filed then try again");
+      }
+    }
+  </script>
+</html>
